@@ -4,8 +4,12 @@
         "rootDir": "./",
         "moduleResolution": "node",
         "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "skipLibCheck": true,
         "strict": true,
-        "target": "ES6",
-        "module": "CommonJS"
+        "target": "ESNext",
+        "module": "CommonJS",
+        "allowSyntheticDefaultImports": true,
+        "resolveJsonModule": true
     }
 }
