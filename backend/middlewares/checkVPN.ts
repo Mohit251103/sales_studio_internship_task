@@ -5,7 +5,7 @@ dotenv.config();
 
 const checkVPN = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const userIp = req.clientIp; 
+        const userIp = req.clientIp;
 
         if (userIp === "127.0.0.1" || userIp === "::1") {
             return next();

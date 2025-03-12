@@ -4,7 +4,7 @@ import Counter from "../models/Counter";
 import ClaimHistory from "../models/ClaimHistory";
 import { Request, Response } from "express";
 
-const COOLDOWN_PERIOD = 60 * 60 * 1000;
+const COOLDOWN_PERIOD = 60 * 1000;
 
 const getCoupon = async (req: Request, res: Response): Promise<void> => {
     try {
