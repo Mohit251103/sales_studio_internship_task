@@ -7,7 +7,6 @@
     "build": "npm install && tsc",
     "start": "node ./dist/server.js",
     "prod": "npm run build && npm start",
-    "postinstall": "npm install",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
