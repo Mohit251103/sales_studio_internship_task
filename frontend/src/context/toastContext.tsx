@@ -9,7 +9,7 @@ interface IToastContext {
 }
 
 export const ToastContext = createContext<IToastContext>({
-    toast: (message: string) => {},
+    toast: () => {},
     open: false,
     setOpen: () => {},
     message: "",
