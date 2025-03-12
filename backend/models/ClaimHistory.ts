@@ -7,7 +7,7 @@ const ClaimHistorySchema = new mongoose.Schema({
         required: true
     },
     lastClaimTime: {
-        type: Date,
+        type: Number,
         default: Date.now()
     }
 });
