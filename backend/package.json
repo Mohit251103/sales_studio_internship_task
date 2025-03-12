@@ -4,8 +4,8 @@
   "main": "server.ts",
   "scripts": {
     "dev": "nodemon --ext ts --exec tsx server.ts",
-    "build": "tsc",
-    "start": "node dist/server.js",
+    "build": "npm install && tsc",
+    "start": "node ./dist/server.js",
     "prod": "npm run build && npm start",
     "postinstall": "npm install",
     "test": "echo \"Error: no test specified\" && exit 1"
