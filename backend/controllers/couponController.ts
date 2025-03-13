@@ -12,14 +12,28 @@ const getCoupon = async (req: Request, res: Response): Promise<void> => {
         let sessionId = req.cookies.session_id;
         const now = Date.now();
 
+        let existingClaim: any = undefined;
+        let hour = 0;
+        let minutes = 0;
+        let seconds = 0;
         if (sessionId) {
-            res.status(429).json({ message: "You have already claimed a coupon. Try again later!" });
+            existingClaim = await ClaimHistory.findOne({ ip: userIp });
+            const remaining = existingClaim.lastClaimTime + COOLDOWN_PERIOD - now;
+            hour = Math.floor(remaining / (1000 * 60 * 60));
+            minutes = Math.floor((remaining - hour*60*60*1000) / (1000 * 60));
+            seconds = Math.floor((remaining - (hour * 60 * 60 * 1000 + minutes * 60 * 1000)) / 1000);
+            res.status(429).json({
+                message: `You have ${hour ? `${hour} hours ` : ""} ${minutes ? `${minutes} minutes ` : ""}
+                 ${seconds ? `${seconds} seconds ` : ""} remaining before you can generate another token.`
+            });
             return;
         }
 
-        const existingClaim = await ClaimHistory.findOne({ ip: userIp });
+
         if (existingClaim && now - existingClaim.lastClaimTime < COOLDOWN_PERIOD) {
-            res.status(429).json({ message: "Cooldown active. Try again later." });
+            res.status(429).json({
+                message: `You have ${hour ? `${hour} hours ` : ""} ${minutes ? `${minutes} minutes ` : ""}
+                 ${seconds ? `${seconds} seconds ` : ""} remaining before you can generate another token.` });
             return;
         }
 
@@ -44,11 +58,10 @@ const getCoupon = async (req: Request, res: Response): Promise<void> => {
             { lastClaimTime: now },
             { upsert: true });
 
-        res.json({ message: `Coupon claimed successfully! Your code: ${coupon.code}` });
+        res.json({ message: `Coupon claimed successfully! Your code: ${coupon.code}`, coupon });
         return;
 
     } catch (error) {
-        console.error("Error:", error);
         res.status(500).json({ message: "Server error!" });
         return;
     }

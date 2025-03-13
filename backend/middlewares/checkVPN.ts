@@ -20,7 +20,6 @@ const checkVPN = async (req: Request, res: Response, next: NextFunction) => {
 
         next();
     } catch (error: any) {
-        console.error("VPN check failed:", error.message);
         res.status(500).json({ message: "Error checking VPN status. Please try again." });
         return;
     }
