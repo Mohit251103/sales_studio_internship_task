@@ -12,12 +12,11 @@ const getCoupon = async (req: Request, res: Response): Promise<void> => {
         let sessionId = req.cookies.session_id;
         const now = Date.now();
 
-        let existingClaim: any = undefined;
+        let existingClaim: any = await ClaimHistory.findOne({ ip: userIp });;
         let hour = 0;
         let minutes = 0;
         let seconds = 0;
-        if (sessionId) {
-            existingClaim = await ClaimHistory.findOne({ ip: userIp });
+        if (sessionId && existingClaim) { 
             const remaining = existingClaim.lastClaimTime + COOLDOWN_PERIOD - now;
             hour = Math.floor(remaining / (1000 * 60 * 60));
             minutes = Math.floor((remaining - hour*60*60*1000) / (1000 * 60));
@@ -52,7 +51,7 @@ const getCoupon = async (req: Request, res: Response): Promise<void> => {
         }
 
         sessionId = uuidv4();
-        res.cookie("session_id", sessionId, { httpOnly: true, maxAge: COOLDOWN_PERIOD });
+        res.cookie("session_id", sessionId, { httpOnly: true, maxAge: COOLDOWN_PERIOD, sameSite: "none" });
         await ClaimHistory.findOneAndUpdate(
             { ip: userIp },
             { lastClaimTime: now },
