@@ -51,7 +51,12 @@ const getCoupon = async (req: Request, res: Response): Promise<void> => {
         }
 
         sessionId = uuidv4();
-        res.cookie("session_id", sessionId, { httpOnly: true, maxAge: COOLDOWN_PERIOD, sameSite: "none" });
+        res.cookie("session_id", sessionId, {
+            httpOnly: true,
+            maxAge: COOLDOWN_PERIOD,
+            sameSite: "none",
+            secure: true
+        });
         await ClaimHistory.findOneAndUpdate(
             { ip: userIp },
             { lastClaimTime: now },
