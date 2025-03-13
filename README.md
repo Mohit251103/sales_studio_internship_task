@@ -66,8 +66,24 @@ Your **frontend** will now be accessible at `http://localhost:5173`.
 
 ## **🛠️ API Routes**
 📌 **Get Coupon Routes**
-- `GET /api/v1/get-coupon`  
+- `GET /api/v1/get-coupon`
 ---
+
+## **🛡️ Abuse Prevention Strategies**
+To prevent users from abusing the application by refreshing the website and getting more coupon within the limited time frame, following security measures have been implemented :
+
+### **1️⃣ HTTP-only Cookies**
+- Whenever user is generating the coupon then **HTTP-only cookies** is stored on the website for the provided cooldown period ( in our case it is 1 minute ), preventing abuse by refreshing the webpage.
+
+### **2️⃣ IP Tracking**
+- Along with storing the cookie we are storing the IP Address of the user's device ( assuming smartphone without public IP in this case ) in the database along with the time at which the coupon was generated.
+- It is an additional measure put along with cookie so that in case cookies are deleted by the user, they can be tracked with the IP.
+
+### **3️⃣ VPN Detection**
+- IPs can be changed with the VPN so this measure is to prevent that.
+- It's a simple middleware to check whether the user is using a VPN or not.
+---
+
 ## 📜 License
 This project is **open-source**. Feel free to modify it as needed.
 
